@@ -20,11 +20,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source code
 COPY . .
 
-# Run database setup and model training if not present
+# Run database setup and seed initial demonstration data
 RUN python -c "from scripts.init_db import init_and_seed_database; init_and_seed_database()"
 
-# Expose port
+# Expose default port
 EXPOSE 8000
 
-# Start server
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start server dynamically listening to ${PORT:-8000}
+CMD ["sh", "-c", "uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

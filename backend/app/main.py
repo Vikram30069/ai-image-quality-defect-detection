@@ -5,12 +5,13 @@ Initializes the FastAPI server, configures CORS, mounts routers,
 serves uploaded image artifacts and static frontend dashboard files.
 """
 
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 from backend.app.config import settings
 from backend.app.database.connection import init_database
@@ -50,34 +51,56 @@ app.include_router(history.router, prefix=settings.API_V1_PREFIX)
 app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
 app.include_router(export.router, prefix=settings.API_V1_PREFIX)
 
-# Mount Uploads directory to serve original and annotated inspection images
-app.mount("/uploads", StaticFiles(directory=str(settings.UPLOAD_DIR)), name="uploads")
+# Resolve Base and Frontend Directories Robustly
+def find_directory(name: str) -> Path:
+    candidates = [
+        settings.BASE_DIR / name,
+        Path.cwd() / name,
+        Path(f"/app/{name}"),
+        Path(__file__).resolve().parent.parent.parent / name
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    # Fallback and create if needed
+    target = settings.BASE_DIR / name
+    target.mkdir(parents=True, exist_ok=True)
+    return target
 
-# Mount sample_images and dataset directories
-SAMPLE_IMAGES_DIR = settings.BASE_DIR / "sample_images"
+
+UPLOAD_DIR = find_directory("uploads")
+SAMPLE_IMAGES_DIR = find_directory("sample_images")
+DATASET_DIR = find_directory("dataset")
+FRONTEND_DIR = find_directory("frontend")
+
+# Mount Static Directories
+if UPLOAD_DIR.exists():
+    app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
+
 if SAMPLE_IMAGES_DIR.exists():
     app.mount("/sample_images", StaticFiles(directory=str(SAMPLE_IMAGES_DIR)), name="sample_images")
 
-DATASET_DIR = settings.BASE_DIR / "dataset"
 if DATASET_DIR.exists():
     app.mount("/dataset", StaticFiles(directory=str(DATASET_DIR)), name="dataset")
 
-# Frontend directory paths
-FRONTEND_DIR = settings.BASE_DIR / "frontend"
+if (FRONTEND_DIR / "css").exists():
+    app.mount("/css", StaticFiles(directory=str(FRONTEND_DIR / "css")), name="css")
 
-if FRONTEND_DIR.exists():
-    # Mount frontend static folders
-    if (FRONTEND_DIR / "css").exists():
-        app.mount("/css", StaticFiles(directory=str(FRONTEND_DIR / "css")), name="css")
-    if (FRONTEND_DIR / "js").exists():
-        app.mount("/js", StaticFiles(directory=str(FRONTEND_DIR / "js")), name="js")
-    if (FRONTEND_DIR / "assets").exists():
-        app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
+if (FRONTEND_DIR / "js").exists():
+    app.mount("/js", StaticFiles(directory=str(FRONTEND_DIR / "js")), name="js")
 
-    @app.get("/", include_in_schema=False)
-    async def serve_frontend_dashboard():
-        """Serves the Single Page Web Dashboard."""
-        index_file = FRONTEND_DIR / "index.html"
-        if index_file.exists():
-            return FileResponse(str(index_file))
-        return {"message": f"{settings.PROJECT_NAME} API is running. Access /docs for Swagger UI."}
+if (FRONTEND_DIR / "assets").exists():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
+
+
+# Serve Frontend Web Dashboard
+@app.get("/", include_in_schema=False)
+@app.head("/", include_in_schema=False)
+async def serve_frontend_dashboard():
+    """Serves the Single Page Web Dashboard."""
+    index_file = FRONTEND_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return HTMLResponse(
+        content=f"<html><body><h2>{settings.PROJECT_NAME}</h2><p>API is live. Access <a href='/docs'>/docs</a> for Swagger UI.</p></body></html>"
+    )
