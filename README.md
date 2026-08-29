@@ -1,37 +1,40 @@
-# VISIONINSPECT - Industrial Machine Vision Quality & Defect Detection System
+# VisionCheck - AI Image Quality & Surface Defect Detection System
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com/)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.9+-red.svg)](https://opencv.org/)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4+-orange.svg)](https://scikit-learn.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com)
+[![Swagger API](https://img.shields.io/badge/API%20Docs-FastAPI-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com/docs)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
+[![Tests](https://img.shields.io/badge/Tests-25%2F25%20Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 
-An end-to-end, full-stack **Industrial Machine Vision Inspection Console** combining **Classical Computer Vision** spatial defect localization with a trained **Random Forest Machine Learning Model** evaluating 7 engineered quality features. Designed for factory quality control workstations, automated manufacturing lines, and technical assessment demonstration.
+An end-to-end, production-ready **AI & Computer Vision Quality Inspection Console** combining **Classical Computer Vision** spatial defect localization with a trained **Random Forest Machine Learning Model** (93% accuracy) evaluating 7 engineered optical quality features. 
+
+🔗 **Live Deployment:** [https://ai-image-quality-defect-detection-ps3t.onrender.com](https://ai-image-quality-defect-detection-ps3t.onrender.com)  
+📖 **Interactive Swagger API:** [https://ai-image-quality-defect-detection-ps3t.onrender.com/docs](https://ai-image-quality-defect-detection-ps3t.onrender.com/docs)
 
 ---
 
-## 1. Executive Summary & Architecture Philosophy
+## 1. Overview & Architecture Philosophy
 
-> **"The system uses a hybrid approach. Classical computer vision performs spatial defect localization, while a Random Forest classifier evaluates overall image quality from seven extracted features. A decision engine combines both outputs into the final inspection result."**
+> **"The system uses a hybrid approach. Classical computer vision performs spatial defect localization (scratches, cracks, blemishes), while a Random Forest classifier evaluates overall image quality from seven extracted optical features. A decision fusion engine combines both outputs into an instantaneous verdict."**
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│  VISIONINSPECT                         System ● ONLINE       │
+│  VISIONCHECK                           System ● ONLINE       │
 ├──────────────┬───────────────────────────────────────────────┤
 │              │                                               │
-│  INSPECT     │  NEW INSPECTION                               │
+│  NAVIGATION  │  AI QUALITY INSPECTOR                         │
 │              │                                               │
-│  Inspect     │  ┌─────────────────────────────────────────┐  │
-│  Dashboard   │  │                                         │  │
-│  History     │  │       DROP IMAGE / SELECT IMAGE         │  │
-│  Analytics   │  │                                         │  │
+│  🏠 Home     │  ┌─────────────────────────────────────────┐  │
+│  🔎 Inspect  │  │                                         │  │
+│  📋 History  │  │       DROP IMAGE / SELECT IMAGE         │  │
+│  📊 Reports  │  │                                         │  │
 │              │  └─────────────────────────────────────────┘  │
 │              │                                               │
-│              │  Sample Images:                               │
-│              │  [Clean] [Scratch] [Crack] [Blemish]         │
+│              │  Real Dataset Examples:                       │
+│              │  [✨ Clean] [⚡ Scratch] [⚡ Crack] [🔴 Blemish]│
 │              │                                               │
 ├──────────────┴───────────────────────────────────────────────┤
-│  AI Model: Random Forest    CV Engine: OpenCV    106 ms     │
+│  AI Model: Random Forest (93%)   CV: OpenCV Saliency   85ms  │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -41,14 +44,14 @@ An end-to-end, full-stack **Industrial Machine Vision Inspection Console** combi
 
 ```mermaid
 graph TD
-    User([Quality Inspector / Client]) --> Ingest[Hero Ingestion Dropzone & Sample Strip]
-    Ingest --> FastAPI[FastAPI REST API Gateway: /api/inspect]
+    User([Quality Inspector / User]) --> Ingest[Visual Dropzone & Dataset Sample Chips]
+    Ingest --> FastAPI[FastAPI REST API: POST /api/inspect]
 
     subgraph Hybrid AI & Vision Processing Pipeline
         FastAPI --> Preproc[Preprocessor: Multi-Color Space RGB/Gray/HSV/LAB]
-        Preproc --> Extractor[Feature Extractor: 7 Canonical Metrics]
+        Preproc --> Extractor[Feature Extractor: 7 Canonical Optical Metrics]
         
-        Extractor -->|Feature Vector| MLModel[ML Quality Classifier: Random Forest]
+        Extractor -->|Feature Vector| MLModel[ML Classifier: Random Forest]
         Extractor -->|Statistical Metrics| QualityAnalyzer[Quality Analyzer: Calibrated Thresholds]
         Preproc --> DefectDetector[Defect Detector: Morphological Top-Hat/Black-Hat & Contours]
         
@@ -60,48 +63,45 @@ graph TD
     subgraph Data Persistence Layer
         ReportEngine --> Repo[SQLAlchemy Repository]
         Repo --> SQLite[(SQLite Database: inspection_system.db)]
-        SQLite --> Tables[inspections / quality_metrics / defects / system_logs]
     end
 
-    ReportEngine -->|Diagnostic JSON + Overlays| WebUI[Industrial Machine Vision Console]
-    WebUI --> Canvas[3-Mode Interactive Canvas: DEFECTS | ORIGINAL | HEATMAP]
-    WebUI --> DecisionBanner[Industrial Decision Banner: PASS / REVIEW / REJECT]
-    WebUI --> Timeline[AI Execution Pipeline Timeline]
+    ReportEngine -->|Diagnostic JSON + Heatmaps| WebUI[VisionCheck Web Console]
+    WebUI --> Canvas[3-Mode Canvas Viewport: DEFECT HIGHLIGHTS | ORIGINAL | HEATMAP]
+    WebUI --> VerdictBanner[3-Tier Verdict: 🟢 GOOD | 🟡 CHECK | 🔴 DEFECT]
 ```
 
 ---
 
-## 3. The 5 Dedicated Application Screens
+## 3. Simplified 4-Tab VisionCheck User Experience
 
 | Screen | Core Functionality |
 |---|---|
-| **① Inspect Workstation** *(Hero)* | Compact dropzone, instant test sample chips (`[✨ Clean]`, `[⚡ Scratch]`, `[⚡ Crack]`, `[🔴 Blemish]`), 3-mode canvas viewport (`DEFECTS`, `ORIGINAL`, `HEATMAP`), hero decision banner, "Why?" root-cause explanation, interactive defect inspector card, execution timeline, and 7-axis quality gauges. |
-| **② Dashboard Overview** | Industrial KPI cards (`INSPECTED`, `PASS RATE`, `AVG SCORE`, `DEFECTS`), Quality Trendline line chart, Defect Category distribution bar chart, and recent inspection stream table. |
-| **③ Inspection Logs (History)** | Complete inspection database table with status filtering (`All`, `Acceptable`, `Degraded`, `Defective`), timestamp, score, defect count, and 1-click inspector recall. |
-| **④ Analytics & Trends** | Quality class breakdown (Pass/Review/Reject doughnut), defect frequency bar chart, and lifetime quality score timeline. |
-| **⑤ Live Compliance Export** | 1-click RFC 4180 CSV (`/api/export/csv`) and JSON (`/api/export/json`) export endpoints. |
+| **🏠 Home** | Visual 3-step workflow explanation (`📷 Upload` ➔ `🤖 AI Checks` ➔ `✅ Get Result`), drag-and-drop dropzone, and 1-click real dataset sample chips (`[✨ Clean Product]`, `[⚡ Scratch Defect]`, `[⚡ Stress Crack]`, `[🔴 Spot Blemish]`, `[🛢️ Contamination]`). |
+| **🔎 Inspect Image** | Instant 3-tier verdict banner (🟢 GOOD, 🟡 CHECK, 🔴 DEFECT), plain-English bullet points, actionable quality recommendations, 3-mode interactive canvas viewer (Defect Highlights, Original, Thermal Heatmap), and expandable `[ ▾ Show Technical Details ]` drawer. |
+| **📋 Previous Checks** | Visual inspection card gallery with thumbnail images, verdict tags, and 1-click inspection reload. |
+| **📊 Reports** | Executive quality analytics with overall pass rates, Defect Category doughnut chart, and quality trend timeline. |
 
 ---
 
 ## 4. Key Features & Detection Capabilities
 
-1. **Blur / Insufficient Sharpness**: Measured via variance of 2D Laplacian operator $\sigma^2(\nabla^2 I)$.
-2. **Exposure Extremes**: Mean grayscale luminance $\mu$ evaluation detecting underexposure (<60) and overexposure (>195).
+1. **Focus & Sharpness**: Measured via variance of the 2D Laplacian operator $\sigma^2(\nabla^2 I)$.
+2. **Exposure & Lighting**: Mean grayscale luminance $\mu$ evaluating underexposure (<60) and overexposure (>195).
 3. **Sensor Noise**: High-frequency residual estimation using Median Absolute Deviation (MAD).
 4. **Information Entropy**: Shannon information content $H = -\sum p_i \log_2 p_i$.
-5. **Physical Surface Defects**: Morphological Top-Hat & Black-Hat segmentation localizing scratches, cracks, circular blemishes, and contamination with non-cluttered bounding boxes and false-color JET heatmaps.
-6. **Machine Learning Classifier**: Scikit-Learn `RandomForestClassifier` trained on 500 procedural samples (**95.50% test accuracy** on unseen evaluation dataset).
+5. **Surface Defect Localization**: Morphological Top-Hat and Black-Hat saliency transforms segmenting scratches, cracks, blemishes, and contamination with non-cluttered bounding boxes and false-color JET thermal heatmaps.
+6. **Machine Learning Quality Classifier**: Scikit-Learn `RandomForestClassifier` trained on real industrial workpiece images (**93.00% accuracy** on unseen test splits).
 
 ---
 
-## 5. Quick Start & Installation
+## 5. Quick Start & Local Installation
 
-### Option A: Local 1-Click Execution (Recommended)
+### Local 1-Click Execution
 
-1. **Clone and Navigate**:
+1. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
-   cd "AI-Powered Image Quality & Defect Detection"
+   git clone https://github.com/Vikram30069/ai-image-quality-defect-detection.git
+   cd ai-image-quality-defect-detection
    ```
 
 2. **Install Dependencies**:
@@ -109,15 +109,15 @@ graph TD
    pip install -r requirements.txt
    ```
 
-3. **Launch Console**:
+3. **Launch the Application**:
    ```bash
    python run.py
    ```
-   *The launcher automatically initializes the SQLite database, validates the ML model, seeds sample inspections, and opens `http://127.0.0.1:8000` in your default browser.*
+   *Automatically seeds the SQLite database with real dataset inspections, verifies ML models, and opens `http://127.0.0.1:8000` in your default browser.*
 
 ---
 
-### Option B: Docker Compose
+### Docker Execution
 
 ```bash
 docker compose up --build
@@ -134,38 +134,38 @@ Run the complete 25-test unit and integration test suite:
 pytest -v
 ```
 
-Output:
 ```text
 tests/test_api.py ................. [ 28%]
 tests/test_defects.py ............. [ 44%]
 tests/test_model.py ............... [ 64%]
 tests/test_quality.py ............. [100%]
 
-============================== 25 passed in 2.80s ==============================
+============================== 25 passed in 3.80s ==============================
 ```
 
 ---
 
-## 7. Machine Learning Model Performance
+## 7. Machine Learning Performance
 
-Evaluated on an independent, unseen test dataset of 200 procedural images:
+Evaluated on an independent, unseen test dataset of 255 real industrial workpieces (KolektorSDD):
 
 ```text
               precision    recall  f1-score   support
 
-  ACCEPTABLE       0.89      0.80      0.84        20
-   DEFECTIVE       0.93      0.98      0.96       100
-    DEGRADED       1.00      0.96      0.98        80
+  ACCEPTABLE       0.92      0.99      0.95       177
+   DEFECTIVE       0.88      0.30      0.45        23
+    DEGRADED       1.00      1.00      1.00        55
 
-    accuracy                           0.95       200
-   macro avg       0.94      0.91      0.93       200
+    accuracy                           0.93       255
+   macro avg       0.93      0.77      0.80       255
+weighted avg       0.93      0.93      0.92       255
 ```
 
 *For complete training methodology, confusion matrix, and feature importances, see [docs/MODEL.md](docs/MODEL.md).*
 
 ---
 
-## 8. Documentation Index
+## 8. Complete Documentation Suite
 
 * 📐 [System Architecture Blueprint](docs/ARCHITECTURE.md)
 * 🧠 [Algorithms & Mathematical Explanations](docs/CODE_EXPLANATION.md)
