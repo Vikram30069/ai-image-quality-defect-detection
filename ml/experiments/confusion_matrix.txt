@@ -1,0 +1,21 @@
+=== Model Evaluation: Confusion Matrix ===
+
+Labels: ['ACCEPTABLE', 'DEFECTIVE', 'DEGRADED']
+
+True \ Pred    ACCEPTABLE     DEFECTIVE      DEGRADED       
+------------------------------------------------------------
+ACCEPTABLE     16             4              0              
+DEFECTIVE      2              98             0              
+DEGRADED       0              3              77             
+
+
+=== Classification Report ===
+              precision    recall  f1-score   support
+
+  ACCEPTABLE       0.89      0.80      0.84        20
+   DEFECTIVE       0.93      0.98      0.96       100
+    DEGRADED       1.00      0.96      0.98        80
+
+    accuracy                           0.95       200
+   macro avg       0.94      0.91      0.93       200
+weighted avg       0.96      0.95      0.95       200

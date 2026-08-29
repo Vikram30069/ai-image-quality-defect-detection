@@ -1,0 +1,29 @@
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Database and uploaded media
+backend/inspection_system.db
+backend/inspection_system.db-journal
+uploads/*
+!uploads/.gitkeep
+
+# Large raw training dataset (813 MB - sample_images/ is tracked instead)
+dataset/
+
+# IDEs
+.vscode/
+.idea/
+*.swp

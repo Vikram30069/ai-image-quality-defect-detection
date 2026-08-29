@@ -1,0 +1,664 @@
+/* ==========================================================================
+   VISIONCHECK - Easy & Descriptive UI Components
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. HOME PAGE HERO & 3-STEP FLOW
+   -------------------------------------------------------------------------- */
+.home-hero {
+  text-align: center;
+  margin: 10px auto 24px auto;
+  max-width: 650px;
+}
+
+.home-hero h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.home-hero p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* 3-Step Visual Workflow Graphic */
+.steps-workflow-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px auto 28px auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  max-width: 680px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-icon-bubble {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.step-text {
+  text-align: left;
+}
+
+.step-text strong {
+  display: block;
+  font-size: 12px;
+  color: #fff;
+}
+
+.step-text span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.step-arrow {
+  color: var(--border-light);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Big Upload Dropzone Card */
+.big-upload-card {
+  background: var(--bg-card);
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 44px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  max-width: 680px;
+  margin: 0 auto 24px auto;
+  box-shadow: var(--shadow-card);
+}
+
+.big-upload-card:hover, .big-upload-card.dragover {
+  border-color: var(--accent-blue);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.upload-icon-large {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.big-upload-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.big-upload-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+
+/* Examples Strip */
+.examples-section {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.examples-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.examples-chips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.example-chip {
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.example-chip:hover {
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   2. INSPECT & CLEAR RESULT SCREEN
+   -------------------------------------------------------------------------- */
+.inspect-container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Top Large Verdict Banner */
+.verdict-banner {
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+  border: 1px solid transparent;
+}
+
+.verdict-banner.good {
+  background: var(--color-good-bg);
+  border-color: var(--color-good-border);
+}
+
+.verdict-banner.check {
+  background: var(--color-check-bg);
+  border-color: var(--color-check-border);
+}
+
+.verdict-banner.defect {
+  background: var(--color-defect-bg);
+  border-color: var(--color-defect-border);
+}
+
+.verdict-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.verdict-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.verdict-title-text h2 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.verdict-banner.good .verdict-title-text h2 { color: var(--color-good); }
+.verdict-banner.check .verdict-title-text h2 { color: var(--color-check); }
+.verdict-banner.defect .verdict-title-text h2 { color: var(--color-defect); }
+
+.verdict-title-text p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.verdict-score-badge {
+  text-align: right;
+}
+
+.score-num {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #fff;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Image Viewport Card */
+.inspect-viewport-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.viewport-toolbar {
+  padding: 10px 18px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.view-buttons-group {
+  display: flex;
+  gap: 6px;
+}
+
+.view-toggle-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.view-toggle-btn:hover {
+  color: #fff;
+}
+
+.view-toggle-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: #60a5fa;
+}
+
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  background: #090c10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#inspectionCanvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Diagnostic Findings & Actions Grid */
+.findings-actions-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.section-block {
+  margin-bottom: 18px;
+}
+
+.section-block:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.findings-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.finding-item {
+  font-size: 13px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.finding-bullet {
+  color: var(--accent-cyan);
+}
+
+.action-box {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+/* Collapsible Technical Details */
+.technical-details-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  transition: all 0.15s ease;
+}
+
+.technical-details-toggle:hover {
+  background: var(--bg-card);
+  color: #fff;
+}
+
+.technical-details-panel {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.technical-details-panel.open {
+  display: block;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tech-item {
+  font-size: 11px;
+}
+
+.tech-label {
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.tech-val {
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+/* Bottom Action Bar */
+.inspect-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   3. PREVIOUS CHECKS CARDS
+   -------------------------------------------------------------------------- */
+.previous-checks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.check-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.check-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.check-card-thumb {
+  height: 140px;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.check-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.check-status-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.check-status-tag.good { background: var(--color-good); color: #000; }
+.check-status-tag.check { background: var(--color-check); color: #000; }
+.check-status-tag.defect { background: var(--color-defect); color: #fff; }
+
+.check-card-body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.check-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.check-card-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.check-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   4. REPORTS EXECUTIVE DASHBOARD
+   -------------------------------------------------------------------------- */
+.reports-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 800px) {
+  .reports-kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.report-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+
+.report-stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.report-stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #fff;
+  line-height: 1.1;
+}
+
+.report-stat-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.reports-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .reports-charts-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-chart-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+
+.report-chart-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS & UTILITIES
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  font-family: var(--font-main);
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+.btn-large {
+  padding: 14px 28px;
+  font-size: 15px;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.toast {
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideIn 0.2s ease;
+}
+
+.toast.success { border-color: var(--color-good); }
+.toast.error { border-color: var(--color-defect); }
+.toast.info { border-color: var(--accent-blue); }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

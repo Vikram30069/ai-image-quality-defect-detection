@@ -1,0 +1,35 @@
+{
+  "model_name": "RandomForestQualityClassifier",
+  "model_version": "1.0.0",
+  "algorithm": "RandomForestClassifier",
+  "trained_at": "2026-08-29T18:07:00.114903+00:00",
+  "feature_names": [
+    "sharpness",
+    "brightness",
+    "contrast",
+    "noise",
+    "entropy",
+    "saturation",
+    "edge_density"
+  ],
+  "class_labels": [
+    "ACCEPTABLE",
+    "DEFECTIVE",
+    "DEGRADED"
+  ],
+  "num_training_samples": 500,
+  "class_distribution": {
+    "DEFECTIVE": 250,
+    "DEGRADED": 200,
+    "ACCEPTABLE": 50
+  },
+  "cross_val_accuracy_mean": 0.96,
+  "cross_val_accuracy_std": 0.0126,
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 8,
+    "min_samples_split": 4,
+    "min_samples_leaf": 2,
+    "random_state": 42
+  }
+}

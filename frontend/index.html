@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VisionCheck - AI Product Quality Inspector</title>
+  
+  <!-- Master Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <!-- Chart.js via stable CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">🔍</div>
+          <div class="logo-text">
+            <h2>VisionCheck</h2>
+            <span>AI Product Inspector</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a class="nav-item active" data-tab="homeTab">
+            <span class="nav-icon">🏠</span>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="inspectTab">
+            <span class="nav-icon">🔎</span>
+            <span>Inspect Image</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="previousChecksTab">
+            <span class="nav-icon">📋</span>
+            <span>Previous Checks</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-tab="reportsTab">
+            <span class="nav-icon">📊</span>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div>AI Model: Quality RF v1.0</div>
+        <div style="margin-top: 2px; color: var(--color-good);">● System Online</div>
+      </div>
+    </aside>
+
+    <!-- Main Viewport -->
+    <main class="main-viewport">
+      
+      <!-- Top Simple Header -->
+      <header class="top-header">
+        <div>
+          <div class="header-title" id="pageHeaderTitle">AI Quality Check</div>
+          <div class="header-subtitle" id="pageHeaderSubtitle">Check any product image for defects in seconds</div>
+        </div>
+
+        <div>
+          <button class="btn btn-primary" id="globalUploadBtn">📁 Upload Image</button>
+          <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+      </header>
+
+      <!-- Main Content Container -->
+      <div class="content-container">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: HOME (EXTREMELY SIMPLE & WELCOMING) -->
+        <!-- ========================================================= -->
+        <div id="homeTab" class="tab-pane active">
+          
+          <div class="home-hero">
+            <h1>AI QUALITY CHECK</h1>
+            <p>Upload a product image and our AI will automatically find any surface defects.</p>
+          </div>
+
+          <!-- 3-Step Visual Workflow Graphic -->
+          <div class="steps-workflow-bar">
+            <div class="step-item">
+              <div class="step-icon-bubble">📷</div>
+              <div class="step-text">
+                <strong>1. Upload</strong>
+                <span>Select product image</span>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-item">
+              <div class="step-icon-bubble">🤖</div>
+              <div class="step-text">
+                <strong>2. AI Checks</strong>
+                <span>Scans for defects</span>
+              </div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-item">
+              <div class="step-icon-bubble">✅</div>
+              <div class="step-text">
+                <strong>3. Get Result</strong>
+                <span>Instant Pass / Reject</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Big Central Upload Box -->
+          <div class="big-upload-card" id="homeDropzone">
+            <div class="upload-icon-large">📷</div>
+            <h3>Upload a product image</h3>
+            <p>Drag and drop your image file here, or click to browse</p>
+            <button class="btn btn-primary btn-large" id="homeUploadBtn">Choose Image</button>
+          </div>
+
+          <!-- Realistic Examples Section -->
+          <div class="examples-section">
+            <div class="examples-title">Or try an example image:</div>
+            <div class="examples-chips">
+              <button class="example-chip" data-sample="clean">✨ Clean Product</button>
+              <button class="example-chip" data-sample="scratch">⚡ Scratch Defect</button>
+              <button class="example-chip" data-sample="crack">⚡ Stress Crack</button>
+              <button class="example-chip" data-sample="blemish">🔴 Spot Blemish</button>
+              <button class="example-chip" data-sample="contamination">🛢️ Contamination</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: INSPECT IMAGE (ONE CLEAR RESULT) -->
+        <!-- ========================================================= -->
+        <div id="inspectTab" class="tab-pane">
+          <div class="inspect-container">
+            
+            <!-- Large Verdict Banner (Good / Check / Defect) -->
+            <div class="verdict-banner good" id="verdictBanner">
+              <div class="verdict-left">
+                <div class="verdict-icon" id="verdictIcon">🟢</div>
+                <div class="verdict-title-text">
+                  <h2 id="verdictTitle">GOOD PRODUCT</h2>
+                  <p id="verdictSubtitle">No surface defects found. Product meets quality standards.</p>
+                </div>
+              </div>
+
+              <div class="verdict-score-badge">
+                <div class="score-num" id="verdictScore">96 / 100</div>
+                <div class="score-label">Quality Score</div>
+              </div>
+            </div>
+
+            <!-- Image Viewport Card -->
+            <div class="inspect-viewport-card">
+              <div class="viewport-toolbar">
+                <div class="view-buttons-group">
+                  <button class="view-toggle-btn active" id="btnModeDefects">🔍 Highlight Defects</button>
+                  <button class="view-toggle-btn" id="btnModeOriginal">🖼️ Original Image</button>
+                  <button class="view-toggle-btn" id="btnModeHeatmap">🔥 Defect Heatmap</button>
+                </div>
+
+                <div style="display: flex; gap: 6px;">
+                  <button class="view-toggle-btn" id="btnZoomIn">➕</button>
+                  <button class="view-toggle-btn" id="btnZoomOut">➖</button>
+                  <button class="view-toggle-btn" id="btnZoomFit">🔄 Fit</button>
+                </div>
+              </div>
+
+              <div class="canvas-wrapper">
+                <canvas id="inspectionCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- What did we find? & What should you do? -->
+            <div class="findings-actions-card">
+              
+              <!-- What did we find? -->
+              <div class="section-block">
+                <div class="section-title">
+                  <span>⚠️</span> <span>What did the AI find?</span>
+                </div>
+                <ul class="findings-list" id="findingsList">
+                  <li class="finding-item"><span class="finding-bullet">✓</span> <span>No physical scratches, cracks, or blemishes detected.</span></li>
+                  <li class="finding-item"><span class="finding-bullet">✓</span> <span>Image is sharp, well-lit, and in clear focus.</span></li>
+                </ul>
+              </div>
+
+              <!-- What should you do? -->
+              <div class="section-block" style="margin-top: 14px;">
+                <div class="section-title">
+                  <span>💡</span> <span>What should you do?</span>
+                </div>
+                <div class="action-box" id="actionRecommendationText">
+                  This product is in pristine condition. Approved for assembly.
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Collapsible Technical Details (For Judges / Engineers) -->
+            <button class="technical-details-toggle" id="toggleTechDetailsBtn">
+              <span>📊 Show Technical Details &amp; 7 Optical Scores</span>
+              <span id="techToggleArrow">▾</span>
+            </button>
+
+            <div class="technical-details-panel" id="techDetailsPanel">
+              <div class="tech-grid">
+                <div class="tech-item">
+                  <div class="tech-label">Focus &amp; Sharpness</div>
+                  <div class="tech-val" id="techSharpness">94 / 100 (In Focus)</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-label">Lighting &amp; Exposure</div>
+                  <div class="tech-val" id="techExposure">90 / 100 (Nominal)</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-label">Dynamic Contrast</div>
+                  <div class="tech-val" id="techContrast">88 / 100 (Balanced)</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-label">Sensor Noise Level</div>
+                  <div class="tech-val" id="techNoise">95 / 100 (Clean)</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-label">Surface Texture Entropy</div>
+                  <div class="tech-val" id="techEntropy">85 / 100</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-label">Inference Processing Time</div>
+                  <div class="tech-val" id="techLatency">~85 ms</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="inspect-action-bar">
+              <button class="btn btn-primary btn-large" id="checkAnotherBtn">🔄 Check Another Image</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: PREVIOUS CHECKS (CLEAN CARD GRID) -->
+        <!-- ========================================================= -->
+        <div id="previousChecksTab" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size: 18px; font-weight: 700; color: #fff;">Previous Inspections</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Click any card to re-open full inspection results</p>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <select id="historyFilterSelect" style="background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px;">
+                <option value="">All Results</option>
+                <option value="ACCEPTABLE">🟢 Good Only</option>
+                <option value="DEGRADED">🟡 Check Only</option>
+                <option value="DEFECTIVE">🔴 Defect Only</option>
+              </select>
+              <button class="btn btn-secondary" id="refreshCardsBtn" style="padding: 6px 12px; font-size: 12px;">🔄 Refresh</button>
+            </div>
+          </div>
+
+          <div class="previous-checks-grid" id="previousChecksGrid">
+            <!-- Dynamically populated with clean cards -->
+          </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 4: REPORTS (SIMPLE EXECUTIVE METRICS) -->
+        <!-- ========================================================= -->
+        <div id="reportsTab" class="tab-pane">
+          
+          <!-- Key KPI Numbers -->
+          <div class="reports-kpi-grid">
+            <div class="report-stat-card">
+              <div class="report-stat-label">Products Checked</div>
+              <div class="report-stat-num" id="reportTotalCount">120</div>
+              <div class="report-stat-sub">Total scans recorded</div>
+            </div>
+
+            <div class="report-stat-card">
+              <div class="report-stat-label" style="color: var(--color-good);">🟢 Good Products</div>
+              <div class="report-stat-num" style="color: var(--color-good);" id="reportGoodCount">98</div>
+              <div class="report-stat-sub" id="reportGoodPct">81.6% pass rate</div>
+            </div>
+
+            <div class="report-stat-card">
+              <div class="report-stat-label" style="color: var(--color-check);">🟡 Need Checking</div>
+              <div class="report-stat-num" style="color: var(--color-check);" id="reportCheckCount">15</div>
+              <div class="report-stat-sub" id="reportCheckPct">12.5% review rate</div>
+            </div>
+
+            <div class="report-stat-card">
+              <div class="report-stat-label" style="color: var(--color-defect);">🔴 Defective</div>
+              <div class="report-stat-num" style="color: var(--color-defect);" id="reportDefectCount">7</div>
+              <div class="report-stat-sub" id="reportDefectPct">5.8% reject rate</div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="reports-charts-row">
+            
+            <div class="report-chart-box">
+              <div class="report-chart-title">Most Common Problems</div>
+              <div style="height: 240px; position: relative;">
+                <canvas id="commonProblemsChart"></canvas>
+              </div>
+            </div>
+
+            <div class="report-chart-box">
+              <div class="report-chart-title">Quality Score Trend</div>
+              <div style="height: 240px; position: relative;">
+                <canvas id="qualityTrendChart"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Download Reports -->
+          <div style="margin-top: 24px; text-align: right;">
+            <a href="/api/export/csv" class="btn btn-secondary">📥 Download CSV Report</a>
+            <a href="/api/export/json" class="btn btn-secondary" style="margin-left: 8px;">📄 Download JSON Data</a>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Floating Toast Alerts -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap Application -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+{
+  "dataset": "Independent Procedural Test Split",
+  "num_test_samples": 200,
+  "overall_accuracy": 0.955,
+  "macro_metrics": {
+    "precision": 0.9407,
+    "recall": 0.9142,
+    "f1_score": 0.9264
+  },
+  "per_class_metrics": {
+    "ACCEPTABLE": {
+      "precision": 0.8889,
+      "recall": 0.8,
+      "f1_score": 0.8421,
+      "support": 20
+    },
+    "DEFECTIVE": {
+      "precision": 0.9333,
+      "recall": 0.98,
+      "f1_score": 0.9561,
+      "support": 100
+    },
+    "DEGRADED": {
+      "precision": 1.0,
+      "recall": 0.9625,
+      "f1_score": 0.9809,
+      "support": 80
+    }
+  },
+  "confusion_matrix": {
+    "classes": [
+      "ACCEPTABLE",
+      "DEFECTIVE",
+      "DEGRADED"
+    ],
+    "matrix": [
+      [
+        16,
+        4,
+        0
+      ],
+      [
+        2,
+        98,
+        0
+      ],
+      [
+        0,
+        3,
+        77
+      ]
+    ]
+  },
+  "feature_importances": {
+    "sharpness": 0.2417,
+    "brightness": 0.1978,
+    "contrast": 0.1604,
+    "entropy": 0.148,
+    "edge_density": 0.1343,
+    "noise": 0.086,
+    "saturation": 0.0319
+  },
+  "num_misclassifications": 9,
+  "misclassifications": [
+    {
+      "filename": "sample_0503_defective_jpeg_artifact.png",
+      "true_label": "DEFECTIVE",
+      "predicted_label": "ACCEPTABLE",
+      "confidence": 0.5293,
+      "features": {
+        "sharpness": 31496.6287,
+        "brightness": 115.2626,
+        "contrast": 34.2224,
+        "noise": 0.0,
+        "entropy": 4.3149,
+        "saturation": 0.4213,
+        "edge_density": 0.0828
+      }
+    },
+    {
+      "filename": "sample_0505_acceptable_clean.png",
+      "true_label": "ACCEPTABLE",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.6391,
+      "features": {
+        "sharpness": 19747.2732,
+        "brightness": 169.8439,
+        "contrast": 35.1784,
+        "noise": 0.0,
+        "entropy": 4.7288,
+        "saturation": 0.231,
+        "edge_density": 0.0432
+      }
+    },
+    {
+      "filename": "sample_0505_degraded_low_contrast.png",
+      "true_label": "DEGRADED",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.5805,
+      "features": {
+        "sharpness": 4064.2346,
+        "brightness": 166.1234,
+        "contrast": 15.8424,
+        "noise": 0.0,
+        "entropy": 3.9884,
+        "saturation": 0.1088,
+        "edge_density": 0.0267
+      }
+    },
+    {
+      "filename": "sample_0505_degraded_mild_blur.png",
+      "true_label": "DEGRADED",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.5907,
+      "features": {
+        "sharpness": 40.9012,
+        "brightness": 169.826,
+        "contrast": 28.636,
+        "noise": 0.0,
+        "entropy": 5.4221,
+        "saturation": 0.2071,
+        "edge_density": 0.0
+      }
+    },
+    {
+      "filename": "sample_0506_acceptable_clean.png",
+      "true_label": "ACCEPTABLE",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.5181,
+      "features": {
+        "sharpness": 30820.3237,
+        "brightness": 107.5549,
+        "contrast": 31.1394,
+        "noise": 0.0,
+        "entropy": 3.3702,
+        "saturation": 0.6754,
+        "edge_density": 0.0566
+      }
+    },
+    {
+      "filename": "sample_0514_degraded_mild_blur.png",
+      "true_label": "DEGRADED",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.881,
+      "features": {
+        "sharpness": 23.0159,
+        "brightness": 138.1057,
+        "contrast": 12.3964,
+        "noise": 0.0,
+        "entropy": 5.3974,
+        "saturation": 0.4152,
+        "edge_density": 0.0
+      }
+    },
+    {
+      "filename": "sample_0516_acceptable_clean.png",
+      "true_label": "ACCEPTABLE",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.5589,
+      "features": {
+        "sharpness": 23543.6332,
+        "brightness": 120.9754,
+        "contrast": 26.3676,
+        "noise": 0.0,
+        "entropy": 2.1097,
+        "saturation": 0.4447,
+        "edge_density": 0.0478
+      }
+    },
+    {
+      "filename": "sample_0518_acceptable_clean.png",
+      "true_label": "ACCEPTABLE",
+      "predicted_label": "DEFECTIVE",
+      "confidence": 0.6048,
+      "features": {
+        "sharpness": 32257.2316,
+        "brightness": 114.2655,
+        "contrast": 25.8466,
+        "noise": 0.0,
+        "entropy": 3.5201,
+        "saturation": 0.4526,
+        "edge_density": 0.0575
+      }
+    },
+    {
+      "filename": "sample_0519_defective_jpeg_artifact.png",
+      "true_label": "DEFECTIVE",
+      "predicted_label": "ACCEPTABLE",
+      "confidence": 0.4862,
+      "features": {
+        "sharpness": 27484.0137,
+        "brightness": 96.3196,
+        "contrast": 33.3679,
+        "noise": 0.0,
+        "entropy": 4.3958,
+        "saturation": 0.586,
+        "edge_density": 0.104
+      }
+    }
+  ]
+}

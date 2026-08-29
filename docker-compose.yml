@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  inspection-system:
+    build: .
+    container_name: vision_inspect_app
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+    volumes:
+      - ./uploads:/app/uploads
+      - ./backend/inspection_system.db:/app/backend/inspection_system.db
+    restart: unless-stopped
