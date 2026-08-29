@@ -159,3 +159,47 @@ async def inspect_image(
         heatmap_url=db_inspection.heatmap_image_path,
         created_at=db_inspection.created_at.isoformat()
     )
+
+
+@router.get("/samples/{sample_name}", summary="Get sample dataset image by name")
+async def get_sample_image(sample_name: str):
+    """Returns a representative dataset sample image."""
+    from fastapi.responses import FileResponse, Response
+    
+    safe_name = Path(sample_name).name.lower().replace(".png", "")
+    alias_map = {
+        "clean": "sample_good.png",
+        "good": "sample_good.png",
+        "scratch": "sample_scratched.png",
+        "scratched": "sample_scratched.png",
+        "crack": "sample_crack_like.png",
+        "blemish": "sample_blemish.png",
+        "contamination": "sample_contamination.png"
+    }
+    actual_file = alias_map.get(safe_name, f"sample_{safe_name}.png")
+    
+    candidates = [
+        settings.SAMPLE_IMAGES_DIR / actual_file,
+        Path.cwd() / "sample_images" / actual_file,
+        Path(f"/app/sample_images/{actual_file}"),
+        settings.BASE_DIR / "sample_images" / actual_file
+    ]
+    for c in candidates:
+        if c.exists():
+            return FileResponse(str(c), media_type="image/png")
+            
+    # Fallback to generating sample image on-the-fly if missing on disk
+    from scripts.generate_sample_data import generate_base_image, apply_scratch, apply_blemish, apply_crack
+    base = generate_base_image(seed=101)
+    if "scratch" in actual_file:
+        img = apply_scratch(base)
+    elif "crack" in actual_file:
+        img = apply_crack(base)
+    elif "blemish" in actual_file:
+        img = apply_blemish(base)
+    else:
+        img = base
+        
+    _, buf = cv2.imencode(".png", img)
+    return Response(content=buf.tobytes(), media_type="image/png")
+
