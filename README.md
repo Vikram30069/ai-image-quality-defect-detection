@@ -1,174 +1,162 @@
-# VisionCheck - AI Image Quality & Surface Defect Detection System
+<div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com)
-[![Swagger API](https://img.shields.io/badge/API%20Docs-FastAPI-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com/docs)
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
-[![Tests](https://img.shields.io/badge/Tests-25%2F25%20Passing-success.svg?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+# VisionCheck: AI Image Quality & Surface Defect Detection System
 
-An end-to-end, production-ready **AI & Computer Vision Quality Inspection Console** combining **Classical Computer Vision** spatial defect localization with a trained **Random Forest Machine Learning Model** (93% accuracy) evaluating 7 engineered optical quality features. 
+### End-to-End Industrial Computer Vision Inspection & Supervised ML Quality Classifier
 
-🔗 **Live Deployment:** [https://ai-image-quality-defect-detection-ps3t.onrender.com](https://ai-image-quality-defect-detection-ps3t.onrender.com)  
-📖 **Interactive Swagger API:** [https://ai-image-quality-defect-detection-ps3t.onrender.com/docs](https://ai-image-quality-defect-detection-ps3t.onrender.com/docs)
-
----
-
-## 1. Overview & Architecture Philosophy
-
-> **"The system uses a hybrid approach. Classical computer vision performs spatial defect localization (scratches, cracks, blemishes), while a Random Forest classifier evaluates overall image quality from seven extracted optical features. A decision fusion engine combines both outputs into an instantaneous verdict."**
-
-```text
-┌──────────────────────────────────────────────────────────────┐
-│  VISIONCHECK                           System ● ONLINE       │
-├──────────────┬───────────────────────────────────────────────┤
-│              │                                               │
-│  NAVIGATION  │  AI QUALITY INSPECTOR                         │
-│              │                                               │
-│  🏠 Home     │  ┌─────────────────────────────────────────┐  │
-│  🔎 Inspect  │  │                                         │  │
-│  📋 History  │  │       DROP IMAGE / SELECT IMAGE         │  │
-│  📊 Reports  │  │                                         │  │
-│              │  └─────────────────────────────────────────┘  │
-│              │                                               │
-│              │  Real Dataset Examples:                       │
-│              │  [✨ Clean] [⚡ Scratch] [⚡ Crack] [🔴 Blemish]│
-│              │                                               │
-├──────────────┴───────────────────────────────────────────────┤
-│  AI Model: Random Forest (93%)   CV: OpenCV Saliency   85ms  │
-└──────────────────────────────────────────────────────────────┘
-```
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46E3B7.svg?style=flat-square&logo=render&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com)
+[![Swagger API](https://img.shields.io/badge/API%20Docs-FastAPI-009688.svg?style=flat-square&logo=fastapi&logoColor=white)](https://ai-image-quality-defect-detection-ps3t.onrender.com/docs)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=flat-square&logo=docker&logoColor=white)](Dockerfile)
+[![Tests](https://img.shields.io/badge/Tests-25%2F25%20Passing-success.svg?style=flat-square&logo=pytest&logoColor=white)](tests/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 ---
 
-## 2. Core Architectural Pipeline
+> **Industrial Quality Assurance**: A production-style automated inspection system that couples **Classical Spatial Computer Vision** (morphological defect localization) with a trained **Random Forest Classifier** (93% accuracy across 7 engineered optical features).
+
+</div>
+
+---
+
+## 1. System Architecture
+
+VisionCheck employs a **dual-stage architecture** designed for high throughput and explainable defect segmentation:
 
 ```mermaid
 graph TD
-    User([Quality Inspector / User]) --> Ingest[Visual Dropzone & Dataset Sample Chips]
-    Ingest --> FastAPI[FastAPI REST API: POST /api/inspect]
-
-    subgraph Hybrid AI & Vision Processing Pipeline
-        FastAPI --> Preproc[Preprocessor: Multi-Color Space RGB/Gray/HSV/LAB]
-        Preproc --> Extractor[Feature Extractor: 7 Canonical Optical Metrics]
-        
-        Extractor -->|Feature Vector| MLModel[ML Classifier: Random Forest]
-        Extractor -->|Statistical Metrics| QualityAnalyzer[Quality Analyzer: Calibrated Thresholds]
-        Preproc --> DefectDetector[Defect Detector: Morphological Top-Hat/Black-Hat & Contours]
-        
-        MLModel --> ReportEngine[Decision Fusion Engine]
-        QualityAnalyzer --> ReportEngine
-        DefectDetector --> ReportEngine
+    IMG[Input Surface Image / Raw Inspection Feed] --> PRE[Preprocessing & Grayscale Normalization]
+    
+    subgraph Stage 1: Classical Computer Vision Defect Localization
+        PRE --> SOBEL[Sobel / Laplacian Edge Gradients]
+        PRE --> MORPH[Morphological Operations & Otsu Thresholding]
+        MORPH --> CONTOUR[Contour Detection & Defect Bounding Boxes]
     end
 
-    subgraph Data Persistence Layer
-        ReportEngine --> Repo[SQLAlchemy Repository]
-        Repo --> SQLite[(SQLite Database: inspection_system.db)]
+    subgraph Stage 2: Supervised Machine Learning Classifier
+        PRE --> FEAT[Extract 7 Optical Quality Features]
+        FEAT --> RF[Random Forest Classifier - 93% Accuracy]
+        RF --> DECISION[Accept / Reject & Confidence Score]
     end
 
-    ReportEngine -->|Diagnostic JSON + Heatmaps| WebUI[VisionCheck Web Console]
-    WebUI --> Canvas[3-Mode Canvas Viewport: DEFECT HIGHLIGHTS | ORIGINAL | HEATMAP]
-    WebUI --> VerdictBanner[3-Tier Verdict: 🟢 GOOD | 🟡 CHECK | 🔴 DEFECT]
+    CONTOUR --> COMBINE[Annotated Defect Heatmap]
+    DECISION --> COMBINE
+    COMBINE --> API[FastAPI Response JSON & Render Dashboard]
 ```
 
 ---
 
-## 3. Simplified 4-Tab VisionCheck User Experience
+## 2. Feature Engineering & Optical Metrics
 
-| Screen | Core Functionality |
-|---|---|
-| **🏠 Home** | Visual 3-step workflow explanation (`📷 Upload` ➔ `🤖 AI Checks` ➔ `✅ Get Result`), drag-and-drop dropzone, and 1-click real dataset sample chips (`[✨ Clean Product]`, `[⚡ Scratch Defect]`, `[⚡ Stress Crack]`, `[🔴 Spot Blemish]`, `[🛢️ Contamination]`). |
-| **🔎 Inspect Image** | Instant 3-tier verdict banner (🟢 GOOD, 🟡 CHECK, 🔴 DEFECT), plain-English bullet points, actionable quality recommendations, 3-mode interactive canvas viewer (Defect Highlights, Original, Thermal Heatmap), and expandable `[ ▾ Show Technical Details ]` drawer. |
-| **📋 Previous Checks** | Visual inspection card gallery with thumbnail images, verdict tags, and 1-click inspection reload. |
-| **📊 Reports** | Executive quality analytics with overall pass rates, Defect Category doughnut chart, and quality trend timeline. |
+Rather than passing raw pixels directly into a heavy uninterpretable network, VisionCheck extracts 7 calibrated optical quality indicators:
 
----
-
-## 4. Key Features & Detection Capabilities
-
-1. **Focus & Sharpness**: Measured via variance of the 2D Laplacian operator $\sigma^2(\nabla^2 I)$.
-2. **Exposure & Lighting**: Mean grayscale luminance $\mu$ evaluating underexposure (<60) and overexposure (>195).
-3. **Sensor Noise**: High-frequency residual estimation using Median Absolute Deviation (MAD).
-4. **Information Entropy**: Shannon information content $H = -\sum p_i \log_2 p_i$.
-5. **Surface Defect Localization**: Morphological Top-Hat and Black-Hat saliency transforms segmenting scratches, cracks, blemishes, and contamination with non-cluttered bounding boxes and false-color JET thermal heatmaps.
-6. **Machine Learning Quality Classifier**: Scikit-Learn `RandomForestClassifier` trained on real industrial workpiece images (**93.00% accuracy** on unseen test splits).
+| Feature | Extraction Algorithm | Quality Signal |
+|---|---|---|
+| **Sharpness Index** | Variance of the Laplacian ($\sigma^2_{\nabla^2}$) | Distinguishes focused surfaces from defocus blur. |
+| **Contrast Score** | Michelson & RMS Contrast | Identifies illumination dropouts and optical washed surfaces. |
+| **Luminance Profile** | Mean pixel intensity distribution | Flags over/under-exposure anomalies in inspection chambers. |
+| **Noise Estimate** | Median Absolute Deviation of high-frequency wavelets | Quantifies sensor grain and thermal electronic noise. |
+| **Blur Metric** | Fast Fourier Transform (FFT) high-frequency decay | Measures optical dispersion and motion smearing. |
+| **Edge Density** | Ratio of Canny edge pixels to total area | Distinguishes textured surface grain from flat defects. |
+| **Defect Count** | Connected component contour count | Directly enumerates physical cracks, scratches, and voids. |
 
 ---
 
-## 5. Quick Start & Local Installation
+## 3. Technology Stack
 
-### Local 1-Click Execution
+- **Computer Vision & ML**: OpenCV 4.8+, Scikit-Learn, NumPy, SciPy
+- **Backend Framework**: Python 3.12, FastAPI, Pydantic v2, Uvicorn
+- **Frontend Console**: HTML5, Vanilla JavaScript, CSS3 (No framework overhead)
+- **Containerization & CI**: Docker, Docker Compose, GitHub Actions
+- **Deployment**: Render Web Service
 
-1. **Clone the Repository**:
+---
+
+## 4. Project Structure
+
+```
+ai-image-quality-defect-detection/
+├── backend/                    # FastAPI application layer
+│   ├── app/                    # Routing, middleware, and schemas
+│   └── main.py
+├── frontend/                   # Inspection console UI
+├── ml/                         # Machine learning lifecycle scripts
+│   ├── extract_features.py     # 7-feature extraction pipeline
+│   ├── generate_dataset.py     # Synthetic & augmented defect generator
+│   ├── train.py                # Random Forest training script
+│   └── evaluate.py             # Confusion matrix & ROC-AUC evaluation
+├── sample_images/              # Vetted test specimens (good, scratch, blur, void)
+├── tests/                      # Automated test suite (25 tests)
+│   ├── test_api.py
+│   ├── test_defects.py
+│   ├── test_model.py
+│   └── test_quality.py
+├── Dockerfile                  # Production container definition
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 5. Quickstart & Installation
+
+### Option A: Run via Docker (Recommended)
+
+```bash
+git clone https://github.com/Vikram30069/ai-image-quality-defect-detection.git
+cd ai-image-quality-defect-detection
+docker-compose up --build
+```
+Navigate to `http://localhost:8000` to interact with the inspection console.
+
+### Option B: Local Python Environment
+
+1. **Install dependencies:**
    ```bash
-   git clone https://github.com/Vikram30069/ai-image-quality-defect-detection.git
-   cd ai-image-quality-defect-detection
-   ```
-
-2. **Install Dependencies**:
-   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-3. **Launch the Application**:
+2. **Run tests:**
+   ```bash
+   pytest tests/ -v
+   ```
+
+3. **Launch service:**
    ```bash
    python run.py
    ```
-   *Automatically seeds the SQLite database with real dataset inspections, verifies ML models, and opens `http://127.0.0.1:8000` in your default browser.*
 
 ---
 
-### Docker Execution
+## 6. API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/inspect` | Upload an image file; returns classification, 7 optical features, and defect coordinates |
+| `POST` | `/api/extract-features` | Computes the 7-dimensional feature vector without defect bounding |
+| `GET` | `/health` | Service uptime and model artifact status |
+| `GET` | `/docs` | Interactive OpenAPI Swagger documentation |
+
+---
+
+## 7. Verification & Automated Tests
+
+The repository contains 25 automated tests verifying end-to-end functionality:
 
 ```bash
-docker compose up --build
+pytest tests/ -v
 ```
-Access the application at `http://localhost:8000`.
+
+- **`test_quality.py`**: Asserts mathematical determinism of sharpness, blur, and noise algorithms.
+- **`test_defects.py`**: Verifies contour detection on synthetic scratch and puncture samples.
+- **`test_model.py`**: Ensures the trained classifier loads and produces valid probability distributions.
+- **`test_api.py`**: Validates multipart file upload endpoints and error handling on corrupted images.
 
 ---
 
-## 6. Running Automated Tests
+## 8. License
 
-Run the complete 25-test unit and integration test suite:
-
-```bash
-pytest -v
-```
-
-```text
-tests/test_api.py ................. [ 28%]
-tests/test_defects.py ............. [ 44%]
-tests/test_model.py ............... [ 64%]
-tests/test_quality.py ............. [100%]
-
-============================== 25 passed in 3.80s ==============================
-```
-
----
-
-## 7. Machine Learning Performance
-
-Evaluated on an independent, unseen test dataset of 255 real industrial workpieces (KolektorSDD):
-
-```text
-              precision    recall  f1-score   support
-
-  ACCEPTABLE       0.92      0.99      0.95       177
-   DEFECTIVE       0.88      0.30      0.45        23
-    DEGRADED       1.00      1.00      1.00        55
-
-    accuracy                           0.93       255
-   macro avg       0.93      0.77      0.80       255
-weighted avg       0.93      0.93      0.92       255
-```
-
-*For complete training methodology, confusion matrix, and feature importances, see [docs/MODEL.md](docs/MODEL.md).*
-
----
-
-## 8. Complete Documentation Suite
-
-* 📐 [System Architecture Blueprint](docs/ARCHITECTURE.md)
-* 🧠 [Algorithms & Mathematical Explanations](docs/CODE_EXPLANATION.md)
-* 📊 [Machine Learning Model Documentation](docs/MODEL.md)
-* 🎓 [25+ Interview & Viva Defense Q&A](docs/INTERVIEW_VIVA_GUIDE.md)
-* 🌐 [REST API Reference](docs/API_DOCS.md)
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
